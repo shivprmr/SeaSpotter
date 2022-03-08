@@ -1,0 +1,155 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>SeaSpotter</title>
+
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	
+	<body vlink="#ff00ff" alink="#ff0000">
+
+	<style>
+		#map{ width: 1300px; height: 800px; }
+	</style>
+	
+	<style>
+			:root { font-size: 18px; font-family: 'Lora', serif; }
+			html {
+			  background: #ECE9E6;  /* fallback for old browsers */
+			  background:  url("10681c4b.png"); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			  font-size: 1em;
+			  color: #131313;
+			  margin: 0;
+			}
+		
+				#container{
+			  width: 900px; margin: auto;
+			}
+				.map{ width: 100%; height: 500px;}
+				h1, h2{
+					text-align: center;
+					background-color: rgba(255,255,255,0.5);
+			  padding: 0.25em;
+				}
+				h1{
+					font-size: 2.5em;
+				}
+				h2{
+					font-size: 2em;
+					margin-bottom: 0;
+				}
+				a{
+					background-color: #bef;
+					color: #333;
+			  font-weight: bold;
+					text-decoration: none;
+			  transition: all 0.5s;
+				}
+				a:hover{
+			  background-color: #f8cdff;
+					text-decoration: underline;
+				}
+				.leaflet-container a {
+					background-color: transparent;
+				}
+		
+			code, pre {
+			  font-family: 'Ubuntu Mono', monospace;
+			}
+		
+				pre{
+					padding: 0 0.25em;
+					overflow: auto;
+				}
+		
+				code em, code em span, code em .token.operator{
+					font-style: normal;
+					font-weight: bold;
+					background: #d0d0d0;
+				}
+			ol li:not(:first-of-type) {
+			  margin-top: 1em;
+			}
+	</style>
+
+	<link rel="stylesheet" href="./leaflet/leaflet.css" />
+	<script src="./leaflet/leaflet.js"></script>
+
+
+	
+</head>
+
+<body>
+	
+<center>
+
+	<div style="max-width: 1600px;background-color: powderblue;">
+		<h1>SeaSpotter</h1>
+	
+		<i><h3>Using AI on Satellite Imagery to Detect Marine Pollution</h3></i>
+	
+		<div id="map"></div>
+	<script>
+  
+	// initialize the map
+	var map = L.map('map').setView([51.505, 0], 14);
+  
+	// load a tile layer
+
+	
+	var sentinelSat = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
+    layers: 's2cloudless-2020_3857',
+	attribution: '<a href="https://s2maps.eu">Sentinel-2 cloudless</a> by <a href="https://eox.at">EOX IT Services GmbH</a>'
+	});
+
+	sentinelSat.addTo(map)
+
+	var eoxHydro = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
+    layers: 'hydrography_3857',
+	attribution: 'Hydrography by <a href="https://eox.at">EOX IT Services GmbH</a>'
+	});
+
+	var eoxOverlay = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
+    layers: 'overlay_bright_3857',
+	attribution: 'Overlay by <a href="https://eox.at">EOX IT Services GmbH</a>',
+	maxZoom: 14
+	});
+
+	eoxOverlay.addTo(map)
+
+	var OpenStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+	attribution: 'Map data by <a href="https://www.openstreetmap.org/copyright">OpenStreetMap           </a>'
+	});
+
+	var esriImagery = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png", {
+	attribution: 'World Imagery by <a href="https://www.esri.com/en-us/home">Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>'
+	});
+
+	
+	var baseLayers = {
+    "Sentinel 2 Cloudless": sentinelSat,
+	"ESRI World Imagery": esriImagery,
+    "OpenStreetMap": OpenStreetMap
+	};
+
+	var overlays = {
+    "Hydrography": eoxHydro,
+	"EOX Overlay": eoxOverlay
+	};
+
+	L.control.layers(baseLayers, overlays).addTo(map);
+	L.control.scale().addTo(map);
+
+
+	</script>
+	
+	<p>&nbsp;</p>
+
+	</div>
+
+	
+</center>
+
+</body>
+
+</html>

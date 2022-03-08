@@ -1,0 +1,147 @@
+@charset "utf-8"; 
+
+
+body
+{
+	
+	margin: 10px;
+	
+	padding: 10px;
+   	background-image: url("https://s3.amazonaws.com/spoonflower/public/design_thumbnails/0343/2223/Pineapple_-_med_repeats_purple_shop_thumb.png");
+    	background-repeat: repeat;
+	font-family: Arial, Helvetica, "sans-serif";
+	
+	font-size: 18px;
+	
+	text-align: center;
+
+}
+
+
+
+#page
+{
+	
+	max-width:800px;
+	
+	margin: 20px auto;
+
+	padding: 30px;	
+	background-color: #bfa475;
+
+}
+
+#header{
+	
+	padding: 5px;
+	
+	background-color: #655035;
+	
+	text-align: center;
+
+}
+
+
+#right-column 
+{
+
+	float: right; 			
+	width: 350px;  	text-align: left;
+
+}
+
+#right-column h2 
+{
+
+	font-size: 1.2rem;
+
+	font-weight: bold;
+
+}
+
+
+.list
+{
+	color: #333300;
+
+}
+
+img
+{
+	
+	border: double 10px #E8D900;
+
+
+
+}
+
+
+
+
+h1 
+{
+
+	font-size:36px;
+
+	color: #ff00ff;
+
+	margin: 0px;
+
+	padding: 5px;
+
+}
+
+
+
+h2 
+{
+
+	font-size:30px;
+
+}
+
+
+
+
+h4
+{
+
+	font-family: Arial;
+
+}
+
+h3
+{
+
+	color:white;
+}
+
+div {
+    max-width: 1000px;
+    height: 1000px;
+    background-color: powderblue;
+}
+
+@media screen and (max-width: 850px) 
+{
+	
+
+
+	#page 
+	{
+
+		max-width: auto;
+
+	}
+	
+
+	#right-column 
+	{	width: auto;
+
+		float: none;
+
+		clear: left;
+
+	}
+
+}
