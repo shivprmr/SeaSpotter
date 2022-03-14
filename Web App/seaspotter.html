@@ -134,13 +134,12 @@
             fillColor: '#fff',
             fillOpacity: 1
         }
-    $.getJSON('countries.geojson',function(data){
+	var countries = $.getJSON('countries.geojson',function(data){
         
-
-        var countries = L.geoJson(data, {
+        	L.geoJson(data, {
                 clickable: false,
                 style: myCustomStyle
-            }).addTo(map);
+            })
     })
 
 	
