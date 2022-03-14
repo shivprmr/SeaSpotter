@@ -73,7 +73,9 @@
 	</style>
 
 	<link rel="stylesheet" href="./leaflet/leaflet.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="./leaflet/leaflet.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
 
 	
@@ -122,8 +124,22 @@
 	});
 
 	var esriImagery = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png", {
-	attribution: 'World Imagery by <a href="https://www.esri.com/en-us/home">Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>'
+	attribution: 'World Imagery by <a href="https://www.esri.com/en-us/home">Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
+	maxZoom: 19,
+	maxNativeZoom: 22
 	});
+
+	var myCustomStyle = {
+            stroke: false,
+            fill: true,
+            fillColor: '#fff',
+            fillOpacity: 1
+        }
+    $.getJSON('countries.geojson',function(data){
+        //var map = L.map('map').setView([39.74739, -105], 4);
+
+        L.geoJson(data).addTo(map);
+    })
 
 	
 	var baseLayers = {
