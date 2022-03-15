@@ -135,8 +135,7 @@
             fillOpacity: 1
         }
 	var countries = $.getJSON('countries.geojson',function(data){
-        
-        	L.geoJson(data, {
+			L.geoJson(data, {
                 clickable: false,
                 style: myCustomStyle
             })
