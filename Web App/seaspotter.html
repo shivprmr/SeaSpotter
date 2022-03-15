@@ -128,13 +128,6 @@
 	maxNativeZoom: 22
 	});
 
-	var myCustomStyle = {
-            stroke: false,
-            fill: true,
-            fillColor: '#fff',
-            fillOpacity: 1
-        };
-
 	
 	var countriesData;
 	$.getJSON('countries.geojson', callbackFuncWithData);
@@ -144,10 +137,7 @@
 		countriesData = data;
 	}
 
-	var countries = L.geoJson(countriesData, {
-                clickable: false,
-                style: myCustomStyle
-            }).addTo(map)
+	var countries = L.geoJson(countriesData).addTo(map)
 
 	
 	var baseLayers = {
