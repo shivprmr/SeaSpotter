@@ -129,12 +129,13 @@
 	});
 
 	
-	var countries;
+	var countriesData;
 	$.getJSON('countries.geojson', callbackFuncWithData);
 
 	function callbackFuncWithData(data)
 	{
-		var countries = L.geoJson(data)
+		countriesData = data;
+		var countries = L.geoJson(data).addTo(map)
 	}
 
 	
@@ -148,8 +149,8 @@
 
 	var overlays = {
     "Hydrography": eoxHydro,
-	"EOX Overlay": eoxOverlay
-	//"Countries": countries
+	"EOX Overlay": eoxOverlay,
+	"Countries": countries
 	};
 
 	L.control.layers(baseLayers, overlays).addTo(map);
