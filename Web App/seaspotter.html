@@ -135,9 +135,10 @@
 	function callbackFuncWithData(data)
 	{
 		countriesData = data;
+		var countries = L.geoJson(data).addTo(map)
 	}
 
-	var countries = L.geoJson('countries.geojson').addTo(map)
+	
 
 	
 	var baseLayers = {
