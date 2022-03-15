@@ -135,7 +135,7 @@
 	function callbackFuncWithData(data)
 	{
 		countriesData = data;
-		var countries = L.geoJson(data).addTo(map)
+		var countries = L.geoJson(data)
 	}
 
 	
@@ -149,8 +149,8 @@
 
 	var overlays = {
     "Hydrography": eoxHydro,
-	"EOX Overlay": eoxOverlay,
-	"Countries": countries
+	"EOX Overlay": eoxOverlay
+	//"Countries": countries
 	};
 
 	L.control.layers(baseLayers, overlays).addTo(map);
