@@ -129,13 +129,12 @@
 	});
 
 	
-	var countriesData;
+	var countries;
 	$.getJSON('countries.geojson', callbackFuncWithData);
 
 	function callbackFuncWithData(data)
 	{
-		countriesData = data;
-		var countries = L.geoJson(data).addTo(map)
+		var countries = L.geoJson(data)
 	}
 
 	
