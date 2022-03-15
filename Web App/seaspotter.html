@@ -133,13 +133,17 @@
             fill: true,
             fillColor: '#fff',
             fillOpacity: 1
-        }
-	var countries = $.getJSON('countries.geojson',function(data){
-			L.geoJson(data, {
+        };
+
+	var countriesData;
+	$.getJSON('countries.geojson',function(data){
+			countriesData = data;
+    })
+
+	var countries = L.geoJson(countriesData, {
                 clickable: false,
                 style: myCustomStyle
             })
-    })
 
 	
 	var baseLayers = {
