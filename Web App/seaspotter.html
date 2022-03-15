@@ -135,10 +135,14 @@
             fillOpacity: 1
         };
 
+	
 	var countriesData;
-	$.getJSON('countries.geojson',function(data){
-			countriesData = data;
-    })
+	$.getJSON('countries.geojson', callbackFuncWithData);
+
+	function callbackFuncWithData(data)
+	{
+		countriesData = data;
+	}
 
 	var countries = L.geoJson(countriesData, {
                 clickable: false,
