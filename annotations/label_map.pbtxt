@@ -1,0 +1,12 @@
+item { 
+	name:'Oil'
+	id:1
+}
+item { 
+	name:'Sediment'
+	id:2
+}
+item { 
+	name:'Clouds'
+	id:3
+}
