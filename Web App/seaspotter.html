@@ -88,7 +88,17 @@
 		<h1>SeaSpotter</h1>
 	
 		<i><h3>Using AI on Satellite Imagery to Detect Marine Pollution</h3></i>
-	
+		
+		<select id = "selectArea" onchange = "goToPlace(this)" >  
+			<option>Choose Place</option>  
+			<option value="yamuna"> Yamuna River, India </option>  
+			<option value="uru"> Lake Uru Uru, Bolivia </option>  
+			<option value="marilao"> Marilao River, Philippines </option>  
+			<option value="maya"> Maya Bay, Thailand </option>  
+		</select>
+
+		<p></p>
+
 		<div id="map"></div>
 	<script>
   
@@ -103,20 +113,19 @@
 	attribution: '<a href="https://s2maps.eu">Sentinel-2 cloudless</a> by <a href="https://eox.at">EOX IT Services GmbH</a>'
 	});
 
-	sentinelSat.addTo(map)
+	
 
 	var eoxHydro = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
     layers: 'hydrography_3857',
 	attribution: 'Hydrography by <a href="https://eox.at">EOX IT Services GmbH</a>'
 	});
 
-	var eoxOverlay = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
+	var eoxLabels = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
     layers: 'overlay_bright_3857',
 	attribution: 'Overlay by <a href="https://eox.at">EOX IT Services GmbH</a>',
 	maxZoom: 14
 	});
 
-	eoxOverlay.addTo(map)
 
 	var OpenStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 	attribution: 'Map data by <a href="https://www.openstreetmap.org/copyright">OpenStreetMap           </a>'
@@ -126,20 +135,36 @@
 	attribution: 'World Imagery by <a href="https://www.esri.com/en-us/home">Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
 	maxZoom: 19,
 	maxNativeZoom: 22
+	//,noWrap: true,
+  	//bounds: [[-90, -180],[90, 180]]
 	});
 
+	esriImagery.addTo(map)
 	
-	var countriesData;
-	$.getJSON('countries.geojson', callbackFuncWithData);
 
-	function callbackFuncWithData(data)
-	{
-		countriesData = data;
-		var countries = L.geoJson(data)
+
+
+	var testStyle = {
+	opacity: 0.9,
+	fillOpacity: 0.7,
+	color: 'red',
+    fillColor: '#f03',
+	};
+
+
+	function makeOverlay(data, layerName, style) {
+	var overlay = L.geoJson(data, {
+		pointToLayer: function (feature, latlng) {
+		return L.geoJson(latlng, feature); 
+		}
+	});
+
+	control.addOverlay(overlay, layerName); 
 	}
 
-	
+	$.getJSON("countries.geojson", function (data) { makeOverlay(data, "Countries", testStyle) });
 
+	$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle) });
 	
 	var baseLayers = {
     "Sentinel 2 Cloudless": sentinelSat,
@@ -149,12 +174,38 @@
 
 	var overlays = {
     "Hydrography": eoxHydro,
-	"EOX Overlay": eoxOverlay
-	//"Countries": countries
+	"EOX Overlay": eoxLabels
 	};
 
-	L.control.layers(baseLayers, overlays).addTo(map);
+	var control = L.control.layers(baseLayers, overlays,{collapsed:false});
+	control.addTo(map)
+
 	L.control.scale().addTo(map);
+
+
+	var yamuna = [28.58536327038716, 77.28239492616193],
+		uru = [-18.112399797400133, -67.10869029965362],
+		marilao = [14.77403638424766, 120.9735289331469],
+		maya = [7.678107054830843, 98.76558559241678];
+
+	//var marker1 = L.marker(yamuna).addTo(map),
+		//marker2 = L.marker(uru).addTo(map),
+		//marker3 = L.marker(marilao).addTo(map),
+		//marker4 = L.marker(maya).addTo(map);
+
+	
+	function goToPlace(select) {  
+		var place = eval(document.getElementById("selectArea").value);  
+		//map.flyTo(place, 10);
+		var marker = L.marker(place).addTo(map).bindPopup(select.options[select.selectedIndex].text).openPopup();
+		map.flyTo(place, 16, { duration: 3 });
+		
+	}  
+
+	var imageUrl = 'plastics-1.png',
+    imageBounds = [[-18.165988122513784, -67.10173880824495], [-18.17777208314403, -67.08946501983228]];
+
+	L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 
 	</script>

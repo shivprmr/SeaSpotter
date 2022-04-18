@@ -1,0 +1,161 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>SeaSpotter</title>
+
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	
+	<body vlink="#ff00ff" alink="#ff0000">
+
+	<style>
+		#map{ width: 1300px; height: 800px; }
+	</style>
+	
+	<style>
+			:root { font-size: 18px; font-family: 'Lora', serif; }
+			html {
+			  background: #ECE9E6;  /* fallback for old browsers */
+			  background:  url("10681c4b.png"); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			  font-size: 1em;
+			  color: #131313;
+			  margin: 0;
+			}
+		
+				#container{
+			  width: 900px; margin: auto;
+			}
+				.map{ width: 100%; height: 500px;}
+				h1, h2{
+					text-align: center;
+					background-color: rgba(255,255,255,0.5);
+			  padding: 0.25em;
+				}
+				h1{
+					font-size: 2.5em;
+				}
+				h2{
+					font-size: 2em;
+					margin-bottom: 0;
+				}
+				a{
+					background-color: #bef;
+					color: #333;
+			  font-weight: bold;
+					text-decoration: none;
+			  transition: all 0.5s;
+				}
+				a:hover{
+			  background-color: #f8cdff;
+					text-decoration: underline;
+				}
+				.leaflet-container a {
+					background-color: transparent;
+				}
+		
+			code, pre {
+			  font-family: 'Ubuntu Mono', monospace;
+			}
+		
+				pre{
+					padding: 0 0.25em;
+					overflow: auto;
+				}
+		
+				code em, code em span, code em .token.operator{
+					font-style: normal;
+					font-weight: bold;
+					background: #d0d0d0;
+				}
+			ol li:not(:first-of-type) {
+			  margin-top: 1em;
+			}
+	</style>
+
+	<link rel="stylesheet" href="./leaflet/leaflet.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="./leaflet/leaflet.js"></script>
+
+
+	
+</head>
+
+<body>
+	
+<center>
+
+	<div style="max-width: 1600px;background-color: powderblue;">
+		<h1>SeaSpotter2</h1>
+	
+		<i><h3>Using AI on Satellite Imagery to Detect Marine Pollution</h3></i>
+	
+		<div id="map"></div>
+	<script>
+  
+	// initialize the map
+	var baseMap = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png", {
+	attribution: 'World Imagery by <a href="https://www.esri.com/en-us/home">Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
+	maxZoom: 19,
+	maxNativeZoom: 22
+	});
+
+var baseMapIndex = {
+  "Map": baseMap
+};
+
+// Create the map
+var map = new L.map('map', {
+    center: new L.LatLng(39.7392, -104.9903),
+    zoom: 10,
+    maxZoom: 18,
+    zoomControl: false, // Disable the default zoom controls.
+    layers: baseMap
+});
+
+// Point style
+var stationStyle = {
+  opacity: 0.9,
+  fillOpacity: 0.7
+};
+
+// Callback to create overlay layer
+/* Creating a layer from a async call probably will be a common task.  
+ * Refactor out the function to make a layer, you can use this function with multiple layers. 
+ */
+function createPointOverlay(data, layerName, style) {
+  var overlay = L.geoJson(data, { // Make the layer from the JSON and grab the handle.
+    pointToLayer: function (feature, latlng) {
+    return L.circleMarker(latlng, style); 
+    }
+  });
+  overlay.addTo(map); // Add the data to the map, now you can see the point layer.
+  control.addOverlay(overlay, layerName); // Add the layer to the Layer Control.
+}
+
+// Get GeoJSON data
+/* Break it down and KISS.  Get the data and call a function upon completion.
+ *
+ * We use a anonymous function to call the createOverlay function.  This is because the callback only has 
+ * the signature with submitting one object, the JSON object.  Once called it passes to the actual function with the
+ * customisation that we wanted.  This allows you to use this with multiple JSON objects served from AWS. 
+ */
+$.getJSON("sample.json", function (data) { createPointOverlay(data, "Light Rail Stations", stationStyle) });
+
+
+// Create the control and add it to the map;
+var control = L.control.layers(baseMapIndex); // Grab the handle of the Layer Control, it will be easier to find.
+control.addTo(map);
+
+
+	</script>
+	
+	<p>&nbsp;</p>
+
+	</div>
+
+	
+</center>
+
+</body>
+
+</html>
