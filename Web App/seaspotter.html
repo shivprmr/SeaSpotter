@@ -164,7 +164,7 @@
 
 	$.getJSON("countries.geojson", function (data) { makeOverlay(data, "Countries", testStyle) });
 
-	$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle) });
+	$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle)  });
 	
 	var baseLayers = {
     "Sentinel 2 Cloudless": sentinelSat,
@@ -213,18 +213,17 @@
                       '#FFEDA0';
 	}
 	
-	function style(feature) {
-    return {
-        fillColor: getColor(feature.properties.type),
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-    };
-	}
+	function setStyle(feature) {
+	return {
+		stroke: feature.properties.stroke,
+		stroke-width: feature.properties.stroke-width,
+		stroke-opacity: feature.properties.stroke-opacity,
+		fill: feature.properties.fill,
+		fill-opacity: feature.properties.fill-opacity
+	};
+
 	
-	L.geoJson(uru.geojson, {style: style}).addTo(map);
+	L.geoJson("uru.geojson", {style: setStyle}).addTo(map);
 
 	</script>
 	
