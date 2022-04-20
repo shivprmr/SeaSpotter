@@ -87,7 +87,7 @@
 	<div style="max-width: 1600px;background-color: powderblue;">
 		<h1>SeaSpotter</h1>
 	
-		<i><h3>Using AI on Satellite Imagery to Detect Marine Pollution - Alex Version</h3></i>
+		<i><h3>Using AI on Satellite Imagery to Detect Marine Pollution - Alex Version 2</h3></i>
 		
 		<select id = "selectArea" onchange = "goToPlace(this)" >  
 			<option>Choose Place</option>  
@@ -165,67 +165,6 @@
 	$.getJSON("countries.geojson", function (data) { makeOverlay(data, "Countries", testStyle) });
 
 	$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle) });
-	
-	$.getJSON(url) 
-            .done(function(data) {
-            //Output SODA JSON and hra base geoJSOn to external function
-            makeOverlay(data, "Pollution", testStyle)        
-            })
-            .done(function() {
-            mapSetup();
-            }); 
-			
-	function mapSetup(){
-		function getColor(d) {
-    return d = "plastic" ? '#2AAD27' : //green
-           d = "oil"  ? '#CB2B3E' : //red
-                      '#CAC428' ; //yellow
-	}
-
-	function style(feature) {
-    return {
-        fillColor: getColor(feature.properties.type),
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-		};
-	}
-
-	L.geoJson(data, {style: style}).addTo(map);
-	
-	//legend.addTo(map);
-	
-	map.on('overlayadd', function(eventLayer){
-        if (eventLayer.name === 'Pollution'){
-          map.addControl(legend);
-        } 
-    });
-
-    map.on('overlayremove', function(eventLayer){
-        if (eventLayer.name === 'Pollution'){
-             map.removeControl(legend);
-        } 
-    }); 
-	
-	var legend = L.control({position: 'bottomright'});
-
-	legend.onAdd = function (map) {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = ["plastic", "oil", "something"],
-        labels = [];
-
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-
-    return div;
-	};
-	}
 	
 	var baseLayers = {
     "Sentinel 2 Cloudless": sentinelSat,
