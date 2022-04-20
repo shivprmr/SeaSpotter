@@ -166,48 +166,17 @@
 
 	$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle) });
 	
-	var baseLayers = {
-    "Sentinel 2 Cloudless": sentinelSat,
-	"ESRI World Imagery": esriImagery,
-    "OpenStreetMap": OpenStreetMap
-	};
-
-	var overlays = {
-    "Hydrography": eoxHydro,
-	"EOX Overlay": eoxLabels
-	};
-
-	var control = L.control.layers(baseLayers, overlays,{collapsed:false});
-	control.addTo(map)
-
-	L.control.scale().addTo(map);
-
-
-	var yamuna = [28.58536327038716, 77.28239492616193],
-		uru = [-18.112399797400133, -67.10869029965362],
-		marilao = [14.77403638424766, 120.9735289331469],
-		maya = [7.678107054830843, 98.76558559241678];
-
-	//var marker1 = L.marker(yamuna).addTo(map),
-		//marker2 = L.marker(uru).addTo(map),
-		//marker3 = L.marker(marilao).addTo(map),
-		//marker4 = L.marker(maya).addTo(map);
-
-	
-	function goToPlace(select) {  
-		var place = eval(document.getElementById("selectArea").value);  
-		//map.flyTo(place, 10);
-		var marker = L.marker(place).addTo(map).bindPopup(select.options[select.selectedIndex].text).openPopup();
-		map.flyTo(place, 16, { duration: 3 });
-		
-	}  
-
-	var imageUrl = 'plastics-1.png',
-    imageBounds = [[-18.165988122513784, -67.10173880824495], [-18.17777208314403, -67.08946501983228]];
-
-	L.imageOverlay(imageUrl, imageBounds).addTo(map);
-	
-	function getColor(d) {
+	$.getJSON(url) 
+            .done(function(data) {
+            //Output SODA JSON and hra base geoJSOn to external function
+            makeOverlay(data, "Pollution", testStyle)        
+            })
+            .done(function() {
+            mapSetup();
+            }); 
+			
+	function mapSetup(){
+		function getColor(d) {
     return d = "plastic" ? '#2AAD27' : //green
            d = "oil"  ? '#CB2B3E' : //red
                       '#CAC428' ; //yellow
@@ -256,6 +225,49 @@
 
     return div;
 	};
+	}
+	
+	var baseLayers = {
+    "Sentinel 2 Cloudless": sentinelSat,
+	"ESRI World Imagery": esriImagery,
+    "OpenStreetMap": OpenStreetMap
+	};
+
+	var overlays = {
+    "Hydrography": eoxHydro,
+	"EOX Overlay": eoxLabels
+	};
+
+	var control = L.control.layers(baseLayers, overlays,{collapsed:false});
+	control.addTo(map)
+
+	L.control.scale().addTo(map);
+
+
+	var yamuna = [28.58536327038716, 77.28239492616193],
+		uru = [-18.112399797400133, -67.10869029965362],
+		marilao = [14.77403638424766, 120.9735289331469],
+		maya = [7.678107054830843, 98.76558559241678];
+
+	//var marker1 = L.marker(yamuna).addTo(map),
+		//marker2 = L.marker(uru).addTo(map),
+		//marker3 = L.marker(marilao).addTo(map),
+		//marker4 = L.marker(maya).addTo(map);
+
+	
+	function goToPlace(select) {  
+		var place = eval(document.getElementById("selectArea").value);  
+		//map.flyTo(place, 10);
+		var marker = L.marker(place).addTo(map).bindPopup(select.options[select.selectedIndex].text).openPopup();
+		map.flyTo(place, 16, { duration: 3 });
+		
+	}  
+
+	var imageUrl = 'plastics-1.png',
+    imageBounds = [[-18.165988122513784, -67.10173880824495], [-18.17777208314403, -67.08946501983228]];
+
+	L.imageOverlay(imageUrl, imageBounds).addTo(map);
+	
 	
 	</script>
 	
