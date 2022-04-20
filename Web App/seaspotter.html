@@ -226,6 +226,20 @@
 
 	L.geoJson(data, {style: style}).addTo(map);
 	
+	//legend.addTo(map);
+	
+	map.on('overlayadd', function(eventLayer){
+        if (eventLayer.name === 'Pollution'){
+          map.addControl(legend);
+        } 
+    });
+
+    map.on('overlayremove', function(eventLayer){
+        if (eventLayer.name === 'Pollution'){
+             map.removeControl(legend);
+        } 
+    }); 
+	
 	var legend = L.control({position: 'bottomright'});
 
 	legend.onAdd = function (map) {
@@ -242,18 +256,6 @@
 
     return div;
 	};
-	
-	map.on('overlayadd', function(eventLayer){
-        if (eventLayer.name === 'Pollution'){
-          map.addControl(legend);
-        } 
-    });
-
-    map.on('overlayremove', function(eventLayer){
-        if (eventLayer.name === 'Pollution'){
-             map.removeControl(legend);
-        } 
-    }); 
 	
 	</script>
 	
