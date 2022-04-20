@@ -4,12 +4,7 @@
     {
       "type": "Feature",
       "properties": {
-        "stroke": "#ffff00",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
-        "fill": "#ffff00",
-        "fill-opacity": 0.5,
-		"type": "oil"
+		    "type": "oil"
       },
       "geometry": {
         "type": "Polygon",
@@ -54,12 +49,7 @@
     {
       "type": "Feature",
       "properties": {
-        "stroke": "#ff0000",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
-        "fill": "#fb0909",
-        "fill-opacity": 0.5,
-		"type": "oil"
+		    "type": "oil"
       },
       "geometry": {
         "type": "Polygon",
@@ -120,12 +110,7 @@
     {
       "type": "Feature",
       "properties": {
-        "stroke": "#00ff00",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
-        "fill": "#00ff00",
-        "fill-opacity": 0.5,
-		"type": "plastic"
+		    "type": "plastic"
       },
       "geometry": {
         "type": "Polygon",
@@ -174,12 +159,7 @@
     {
       "type": "Feature",
       "properties": {
-        "stroke": "#00ff00",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
-        "fill": "#00ff00",
-        "fill-opacity": 0.5,
-		"type": "plastic"
+		    "type": "plastic"
       },
       "geometry": {
         "type": "Polygon",
@@ -240,12 +220,7 @@
     {
       "type": "Feature",
       "properties": {
-        "stroke": "#ff0000",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
-        "fill": "#ff0000",
-        "fill-opacity": 0.5,
-		"type": "something else"
+		    "type": "something else"
       },
       "geometry": {
         "type": "Polygon",
@@ -286,12 +261,7 @@
     {
       "type": "Feature",
       "properties": {
-        "stroke": "#ffff00",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
-        "fill": "#ffff00",
-        "fill-opacity": 0.5,
-		"type": "something else"
+		    "type": "something else"
       },
       "geometry": {
         "type": "Polygon",
