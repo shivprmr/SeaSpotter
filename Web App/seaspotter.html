@@ -75,6 +75,7 @@
 	<link rel="stylesheet" href="./leaflet/leaflet.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="./leaflet/leaflet.js"></script>
+	<script src="uru.js" type="text/javascript"></script>
 
 
 	
@@ -164,7 +165,16 @@
 
 	$.getJSON("countries.geojson", function (data) { makeOverlay(data, "Countries", testStyle) });
 
-	$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle)  });
+	urugeojson.forEach(function(urupolygon) {
+    var polygon = L.polygon(urupolygon.geometry.coordinates, {
+        weight: 1,
+        fillOpacity: 0.7,
+        color: 'white',
+        dashArray: '3'
+    }).addTo(map);
+});
+	
+	//$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle)  });
 	
 	var baseLayers = {
     "Sentinel 2 Cloudless": sentinelSat,
