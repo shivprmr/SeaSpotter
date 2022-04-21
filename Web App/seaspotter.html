@@ -2,7 +2,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>SeaSpotter - Alex Version 2</title>
+	<title>SeaSpotter - Alex Version 3</title>
 
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 	
@@ -75,7 +75,6 @@
 	<link rel="stylesheet" href="./leaflet/leaflet.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="./leaflet/leaflet.js"></script>
-	<script src="uru.js" type="text/javascript"></script>
 
 
 	
@@ -88,7 +87,7 @@
 	<div style="max-width: 1600px;background-color: powderblue;">
 		<h1>SeaSpotter</h1>
 	
-		<i><h3>Using AI on Satellite Imagery to Detect Marine Pollution - Alex Version 2</h3></i>
+		<i><h3>Using AI on Satellite Imagery to Detect Marine Pollution - Alex Version 3</h3></i>
 		
 		<select id = "selectArea" onchange = "goToPlace(this)" >  
 			<option>Choose Place</option>  
@@ -165,16 +164,7 @@
 
 	$.getJSON("countries.geojson", function (data) { makeOverlay(data, "Countries", testStyle) });
 
-	urugeojson.forEach(function(urupolygon) {
-    var polygon = L.polygon(urupolygon.geometry.coordinates, {
-        weight: 1,
-        fillOpacity: 0.7,
-        color: 'white',
-        dashArray: '3'
-    }).addTo(map);
-});
-	
-	//$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle)  });
+	$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle)  });
 	
 	var baseLayers = {
     "Sentinel 2 Cloudless": sentinelSat,
