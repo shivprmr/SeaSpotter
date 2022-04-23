@@ -1,222 +1,171 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>One-column fixed-width responsive layout</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="Description" lang="en" content="ADD SITE DESCRIPTION">
+		<meta name="author" content="ADD AUTHOR INFORMATION">
+		<meta name="robots" content="index, follow">
 
-<head>
-	<meta charset="utf-8">
-	<title>SeaSpotter</title>
+		<!-- icons -->
+		<link rel="shortcut icon" href="favicon.ico">
 
-	<link rel="icon" href="favicon.ico" type="image/x-icon">
-	
-	<body vlink="#ff00ff" alink="#ff0000">
+		<!-- Override CSS file - add your own CSS rules -->
+		<link rel="stylesheet" href="styles2.css">
 
-	<style>
-		#map{ width: 1300px; height: 800px; }
-	</style>
-	
-	<style>
-			:root { font-size: 18px; font-family: 'Lora', serif; }
-			html {
-			  background: #ECE9E6;  /* fallback for old browsers */
-			  background:  url("10681c4b.png"); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-			  font-size: 1em;
-			  color: #131313;
-			  margin: 0;
-			}
+    
+        <link rel="stylesheet" href="./leaflet/leaflet.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="./leaflet/leaflet.js"></script>
+	</head>
+	<body>
+        
+		<div class="container">
+             
+			<div class="header" style="padding: 0.25em;">
+                <img src="logo.png" style="width:16%;display: block;margin-left: auto;margin-right: auto;">
+			</div>
+
+			<div class="nav-bar" style="padding: 0.5em;">
+            <i><h4 style="width:40%;display: block;margin-left: auto;margin-right: auto;text-align:center;">Using AI on Satellite Imagery to Detect Marine Pollution</h4></i>
+					<select id = "selectArea" onchange = "goToPlace(this)" style="min-width:30%;width:40%;display: block;margin-left: auto;margin-right: auto;" >  
+                        <option>Choose Place</option>  
+                         
+                        <option value="ship" zoom=18> 1. Ship Pollution, Gibraltar </option>  
+                        <option value="oil"> 2. Oil Rigs, Alabama </option>  
+                        <option value="flood"> 3. Flood Pollutants, North Carolina </option>  
+                        <option value="yamuna"> 4. Yamuna River, India </option> 
+                    </select>
+				
+			</div>
+            <div id="map"></div>
 		
-				#container{
-			  width: 900px; margin: auto;
-			}
-				.map{ width: 100%; height: 500px;}
-				h1, h2{
-					text-align: center;
-					background-color: rgba(255,255,255,0.5);
-			  padding: 0.25em;
-				}
-				h1{
-					font-size: 2.5em;
-				}
-				h2{
-					font-size: 2em;
-					margin-bottom: 0;
-				}
-				a{
-					background-color: #bef;
-					color: #333;
-			  font-weight: bold;
-					text-decoration: none;
-			  transition: all 0.5s;
-				}
-				a:hover{
-			  background-color: #f8cdff;
-					text-decoration: underline;
-				}
-				.leaflet-container a {
-					background-color: transparent;
-				}
-		
-			code, pre {
-			  font-family: 'Ubuntu Mono', monospace;
-			}
-		
-				pre{
-					padding: 0 0.25em;
-					overflow: auto;
-				}
-		
-				code em, code em span, code em .token.operator{
-					font-style: normal;
-					font-weight: bold;
-					background: #d0d0d0;
-				}
-			ol li:not(:first-of-type) {
-			  margin-top: 1em;
-			}
-	</style>
+			<div class="footer">
 
-	<link rel="stylesheet" href="./leaflet/leaflet.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="./leaflet/leaflet.js"></script>
-
-
-	
-</head>
-
-<body>
-	
-<center>
-
-	<div style="max-width: 1600px;background-color: powderblue;">
-		<h1>SeaSpotter</h1>
-	
-		<i><h3>Using AI on Satellite Imagery to Detect Marine Pollution</h3></i>
-		
-		<select id = "selectArea" onchange = "goToPlace(this)" >  
-			<option>Choose Place</option>  
-			<option value="yamuna"> Yamuna River, India </option>  
-			<option value="uru"> Lake Uru Uru, Bolivia </option>  
-			<option value="marilao"> Marilao River, Philippines </option>  
-			<option value="maya"> Maya Bay, Thailand </option>  
-		</select>
-
-		<p></p>
-
-		<div id="map"></div>
-	<script>
-  
-	// initialize the map
-	var map = L.map('map').setView([51.505, 0], 13);
-  
-	// load a tile layer
-
-	
-	var sentinelSat = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
-    layers: 's2cloudless-2020_3857',
-	attribution: '<a href="https://s2maps.eu">Sentinel-2 cloudless</a> by <a href="https://eox.at">EOX IT Services GmbH</a>'
-	});
-
-	
-
-	var eoxHydro = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
-    layers: 'hydrography_3857',
-	attribution: 'Hydrography by <a href="https://eox.at">EOX IT Services GmbH</a>'
-	});
-
-	var eoxLabels = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
-    layers: 'overlay_bright_3857',
-	attribution: 'Overlay by <a href="https://eox.at">EOX IT Services GmbH</a>',
-	maxZoom: 14
-	});
-
-
-	var OpenStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-	attribution: 'Map data by <a href="https://www.openstreetmap.org/copyright">OpenStreetMap           </a>'
-	});
-
-	var esriImagery = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png", {
-	attribution: 'World Imagery by <a href="https://www.esri.com/en-us/home">Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
-	maxZoom: 19,
-	maxNativeZoom: 22
-	//,noWrap: true,
-  	//bounds: [[-90, -180],[90, 180]]
-	});
-
-	esriImagery.addTo(map)
-	
-
-
-
-	var testStyle = {
-	opacity: 0.9,
-	fillOpacity: 0.7,
-	color: 'red',
-    fillColor: '#f03',
-	};
-
-
-	function makeOverlay(data, layerName, style) {
-	var overlay = L.geoJson(data, {
-		pointToLayer: function (feature, latlng) {
-		return L.geoJson(latlng, feature); 
-		}
-	});
-
-	control.addOverlay(overlay, layerName); 
-	}
-
-	$.getJSON("countries.geojson", function (data) { makeOverlay(data, "Countries", testStyle) });
-
-	$.getJSON("uru.geojson", function (data) { makeOverlay(data, "Pollution", testStyle) });
-	
-	var baseLayers = {
-    "Sentinel 2 Cloudless": sentinelSat,
-	"ESRI World Imagery": esriImagery,
-    "OpenStreetMap": OpenStreetMap
-	};
-
-	var overlays = {
-    "Hydrography": eoxHydro,
-	"EOX Overlay": eoxLabels
-	};
-
-	var control = L.control.layers(baseLayers, overlays,{collapsed:false});
-	control.addTo(map)
-
-	L.control.scale().addTo(map);
-
-
-	var yamuna = [28.58536327038716, 77.28239492616193],
-		uru = [-18.112399797400133, -67.10869029965362],
-		marilao = [14.77403638424766, 120.9735289331469],
-		maya = [7.678107054830843, 98.76558559241678];
-
-	//var marker1 = L.marker(yamuna).addTo(map),
-		//marker2 = L.marker(uru).addTo(map),
-		//marker3 = L.marker(marilao).addTo(map),
-		//marker4 = L.marker(maya).addTo(map);
-
-	
-	function goToPlace(select) {  
-		var place = eval(document.getElementById("selectArea").value);  
-		//map.flyTo(place, 10);
-		var marker = L.marker(place).addTo(map).bindPopup(select.options[select.selectedIndex].text).openPopup();
-		map.flyTo(place, 16, { duration: 3 });
-		
-	}  
-
-	var imageUrl = 'plastics-1.png',
-    imageBounds = [[-18.165988122513784, -67.10173880824495], [-18.17777208314403, -67.08946501983228]];
-
-	L.imageOverlay(imageUrl, imageBounds).addTo(map);
-
-
-	</script>
-	
-	<p>&nbsp;</p>
-
-	</div>
-
-	
-</center>
-
-</body>
-
+			</div>
+		</div>
+	</body>
 </html>
+
+
+<script>
+  
+    // initialize the map
+    var map = L.map('map').setView([52.76674261180465, -1.2290799481795682], 13);
+
+    var popup = L.popup()
+    .setLatLng([52.76674261180465, -1.2290799481795682])
+    .setContent("Hello! Welcome to SeaSpotter. To begin, select a place from the drop down menu above.")
+    .openOn(map);
+
+    
+    var sentinelSat = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
+    layers: 's2cloudless-2020_3857',
+    attribution: '<a href="https://s2maps.eu">Sentinel-2 cloudless</a> by <a href="https://eox.at">EOX IT Services GmbH</a>'
+    });
+
+    
+
+    var eoxHydro = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
+    layers: 'hydrography_3857',
+    attribution: 'Hydrography by <a href="https://eox.at">EOX IT Services GmbH</a>'
+    });
+
+    var eoxLabels = L.tileLayer.wms("https://tiles.maps.eox.at/?", {
+    layers: 'overlay_bright_3857',
+    attribution: 'Overlay by <a href="https://eox.at">EOX IT Services GmbH</a>',
+    maxZoom: 14
+    });
+
+
+    var OpenStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: 'Map data by <a href="https://www.openstreetmap.org/copyright">OpenStreetMap           </a>'
+    });
+
+    var esriImagery = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png", {
+    attribution: 'World Imagery by <a href="https://www.esri.com/en-us/home">Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
+    maxZoom: 18,
+    maxNativeZoom: 22
+    //,noWrap: true,
+    //bounds: [[-90, -180],[90, 180]]
+    });
+
+    esriImagery.addTo(map)
+    eoxLabels.addTo(map)
+    
+
+
+
+    var testStyle = {
+    opacity: 0.9,
+    fillOpacity: 0.7,
+    color: 'red',
+    fillColor: '#f03',
+    };
+
+
+    function makeOverlay(data, layerName, style) {
+    var overlay = L.geoJson(data, {
+        pointToLayer: function (feature, latlng) {
+        return L.geoJson(latlng, feature); 
+        }
+    });
+
+    control.addOverlay(overlay, layerName); 
+    }
+
+    //$.getJSON("countries.geojson", function (data) { makeOverlay(data, "Countries", testStyle) });
+
+    
+    var baseLayers = {
+    "Sentinel 2 Cloudless": sentinelSat,
+    "ESRI World Imagery": esriImagery,
+    "OpenStreetMap": OpenStreetMap
+    };
+
+    var overlays = {
+    "Hydrography": eoxHydro,
+    "EOX Overlay": eoxLabels
+    };
+
+    var control = L.control.layers(baseLayers, overlays,{collapsed:false});
+    control.addTo(map)
+
+    L.control.scale().addTo(map);
+
+
+    var yamuna = [28.58536327038716, 77.28239492616193],
+        flood = [34.55332228196319, -76.82607352896937],
+        ship = [36.12830868536006, -5.364027700042859],
+        oil = [30.296916379290398, -88.04468390805113];
+
+    var yamunaVal = 14,
+        floodVal = 11,
+        shipVal = 14,
+        oilVal = 18;
+
+    var yamunaText = "The Yamuna River in India is considered to be one of the most polluted rivers in India. The pollution in this river is primarily caused by industrial waste which is often pumped and released into the river. We believe, with higher resolution imagery, our AI could be trained to classify the white toxic foam which often floats on top of the river.",
+        floodText = "Here our AI has been able to classify the heavily polluted water being released from rivers in North Carolina after Hurricane Florence hit in 2018. The hurricane caused floods which in turn caused many pollutants such as animal waste to leak into rivers. These natural disasters have been known to increase in frequency due to climate change and global pollution. (NASA Imagery)",
+        shipText = "Here our AI has detected some ships. As well as contributing to air pollution, the amount of sewage and toxic chemicals that ships very often release can be detrimental to all aquatic life forms and results in irreversible damage.",
+        oilText = "Offshore oil drilling causes hundreds of oil spills each year, exposing entire ecosystems to the lethal effects of crude oil. We can prevent this by using clean and renewable energy sources in place of oil-based energy.";
+
+    
+    function goToPlace(select) {  
+        var place = eval(document.getElementById("selectArea").value);  
+        var marker = L.marker(place).addTo(map).bindPopup(eval((document.getElementById("selectArea").value)+"Text")).openPopup();
+        var zoom = eval((document.getElementById("selectArea").value)+"Val");
+        map.flyTo(place, zoom, { duration: 2 });
+        
+    }  
+
+
+    L.imageOverlay('ship.png', [[36.13997611246621, -5.398016651611177], [36.10851380770376, -5.320403891849731]]).addTo(map);
+
+    L.imageOverlay('rig.png', [[30.297833409755288, -88.0473485732726], [30.29423913156476, -88.04179103640433]]).addTo(map);
+
+    L.imageOverlay('pollutant.png', [[34.86341889808758, -77.26865773894299], [34.394333393969684, -76.21497026829239]]).addTo(map);
+
+
+</script>
